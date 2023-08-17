@@ -2,7 +2,10 @@ from sentence_transformers import SentenceTransformer
 import pinecone
 import openai
 import streamlit as st
-openai.api_key = "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"
+import os
+
+os.environ['OPENAI_API_KEY'] = st.secrets['OPENAI_API_KEY']
+openai.api_key = os.getenv('OPENAI_API_KEY')
 model = SentenceTransformer('all-MiniLM-L6-v2')
 
 pinecone.init(api_key='509434ef-757b-41f1-ae2f-27827d2c0ff5', environment='us-west4-gcp-free')
@@ -16,7 +19,6 @@ def find_match(input):
     return result['matches'][0]['metadata']['text']+"\n"+result['matches'][1]['metadata']['text']
 
 def query_refiner(conversation, query):
-
     response = openai.Completion.create(
     model="text-davinci-003",
     prompt=f"Compte tenu de la requête utilisateur et du journal de conversation suivants, formulez une question qui serait la plus pertinente pour fournir à l'utilisateur une réponse à partir d'une base de connaissances.\n\njournal de conversation: \n{conversation}\n\n requête: {query}\n\nune requête raffinée:",

@@ -10,7 +10,6 @@ from langchain.prompts import (
 import streamlit as st
 from streamlit_chat import message
 from utils import *
-
 # st.subheader("Depf Chatbot with Langchain, ChatGPT, Pinecone, and Streamlit")
 st.subheader("Le DepfChatBot Votre assistant virtuel")
 st.subheader("La Direction des Etudes et des Prévisions Financières (DEPF)")
@@ -22,7 +21,7 @@ if 'responses' not in st.session_state:
 if 'requests' not in st.session_state:
     st.session_state['requests'] = []
 
-llm = ChatOpenAI(model_name="gpt-3.5-turbo", openai_api_key="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")
+llm = ChatOpenAI(model_name="gpt-3.5-turbo", openai_api_key=os.getenv('OPENAI_API_KEY'))
 
 if 'buffer_memory' not in st.session_state:
             st.session_state.buffer_memory=ConversationBufferWindowMemory(k=3,return_messages=True)
